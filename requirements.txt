@@ -3,3 +3,4 @@ click
 pytest
 black
 lxml
+pandas_read_xml
