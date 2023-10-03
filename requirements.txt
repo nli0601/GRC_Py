@@ -1,0 +1,5 @@
+pylint
+click
+pytest
+black
+lxml
