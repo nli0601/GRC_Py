@@ -1,1 +1,7 @@
-import pandas_read_xml as pdx
+import xml.etree.ElementTree as ET
+
+tree = ET.parse('sample.xml')
+root = tree.getroot()
+
+print (root.tag)
+print (len(root))
