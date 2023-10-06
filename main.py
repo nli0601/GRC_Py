@@ -1,32 +1,38 @@
 import xml.etree.ElementTree as ET
 
-treeIn = ET.parse('sample.xml')
-rootIn = treeIn.getroot()
+systemList = []
+# Reading xml file
 
-# print (root.tag, root.attrib)
-# print (len(root))
+def xmlReading():
+    treeIn = ET.parse('sample.xml')
+    rootIn = treeIn.getroot()   
+    for child in rootIn.findall('item'):
+        sysType = child.find('Type').text
+        if sysType == 'SYS':
+            systemName = child.find('Item').text
+            systemList.append(systemName)
 
 
-# print (root[0][7].text)
-# print (len(root[0]))
+# Generation of xml file.
+#
+#
+def xmlGeneration():
+    rootOut = ET.Element('RequestedLineItem')
+    for child in systemList:
+        item = ET.SubElement(rootOut, "item")
+        ET.SubElement(item, "ItemName").text = child
+        ET.SubElement(item, "Connector").text = child
+        ET.SubElement(item, "ProvItemType").text = "SYS"
+        # replace with current date - datetime etc...
+        ET.SubElement(item, "ValidFrom").text = "20231006"
+        ET.SubElement(item, "ValidTo").text = "20231006"
+        ET.SubElement(item, "ProvAction").text = "002"
+    tree = ET.ElementTree(rootOut)
+    tree.write("filename.xml")
 
-# systemList = []
-# for child in root:
-#     if child[1].text == "SYS":
-#         systemList.append(child[0].text)
+def main():
+    xmlReading()
+    xmlGeneration()
 
-# print (systemList)
-
-rootOut = ET.Element('UserExistingAssignment')
-
-item = ET.SubElement(rootOut, "item")
-
-ET.SubElement(item, "ItemName").text = "some value1"
-ET.SubElement(item, "Type").text = "some vlaue2"
-ET.SubElement(item, "Connector").text = "some vlaue3"
-ET.SubElement(item, "Status").text = "some vlaue4"
-ET.SubElement(item, "ProvAction").text = "some vlaue5"
-ET.SubElement(item, "ProvItemType").text = "some vlaue6"
-
-tree = ET.ElementTree(rootOut)
-tree.write("filename.xml")
+if __name__ == "__main__":
+        main()
